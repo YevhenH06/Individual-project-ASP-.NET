@@ -1,0 +1,313 @@
+﻿@model Навчальна_практика_Гута.Models.Production
+@{
+    ViewBag.Title = "Редагування продукції";
+    var currentDiscount = Model.Discount.FirstOrDefault();
+}
+<div class="container">
+    <h2 class="mt-4 mb-4">Редагування продукції</h2>
+
+    @using (Html.BeginForm("EditProduct", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4><i class="fas fa-box-open"></i> Основні дані продукту</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ProductName, "Назва продукту", new { @class = "font-weight-bold" })
+                            @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ProductName)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Price, "Ціна", new { @class = "font-weight-bold" })
+                            <div class="input-group">
+                                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", id = "productPrice" })
+                                <div class="input-group-append">
+                                    <span class="input-group-text">₴</span>
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Price)
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DisplayTime, "Дата виробництва", new { @class = "font-weight-bold" })
+                            @Html.TextBoxFor(model => model.DisplayTime, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ExpiryTime, "Термін придатності", new { @class = "font-weight-bold" })
+                            @Html.TextBoxFor(model => model.ExpiryTime, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Quantity, "Кількість", new { @class = "font-weight-bold" })
+                            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", type = "number", min = "0" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary mr-2">
+                <i class="fas fa-save"></i> Зберегти зміни
+            </button>
+            @Html.ActionLink("Скасувати", "Products", null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+    <div class="card shadow mt-4">
+        <div class="card-header bg-info text-white">
+            <h4><i class="fas fa-tag"></i> Управління знижкою</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Поточна ціна:</label>
+                        <p class="form-control-plaintext">@Model.Price.ToString("C")</p>
+                    </div>
+                </div>
+                @if (currentDiscount != null)
+                {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Ціна зі знижкою:</label>
+                            <p class="form-control-plaintext text-success">@currentDiscount.DiscountedPrice.ToString("C")</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Розмір знижки:</label>
+                            <p class="form-control-plaintext">@((currentDiscount.DiscountValue * 100).ToString("0.##"))%</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    @if (currentDiscount != null)
+                    {
+                        <button class="btn btn-primary mr-2" onclick="showDiscountModal(true, '@currentDiscount.Id', '@currentDiscount.DiscountName', '@((currentDiscount.DiscountValue * 100).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture))')">
+                            <i class="fas fa-edit"></i> Редагувати знижку
+                        </button>
+                        <button class="btn btn-danger" onclick="removeDiscount(@currentDiscount.Id)">
+                            <i class="fas fa-trash"></i> Видалити знижку
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success" onclick="showDiscountModal(false)">
+                            <i class="fas fa-plus"></i> Додати знижку
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Модальне вікно для знижки -->
+<div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="discountModalLabel">Додати знижку</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="discountForm">
+                    <input type="hidden" id="productId" value="@Model.Id" />
+                    <input type="hidden" id="discountId" value="" />
+                    <input type="hidden" id="isEdit" value="false" />
+                    <div class="mb-3">
+                        <label for="discountName" class="form-label">Назва знижки</label>
+                        <input type="text" class="form-control" id="discountName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="discountValue" class="form-label">Розмір знижки (%)</label>
+                        <input type="number" class="form-control" id="discountValue"
+                               min="0.01" max="100" step="0.01" required>
+                    </div>
+                    <div class="alert alert-info">
+                        <p>Поточна ціна: <strong id="originalPrice">@Model.Price.ToString("C")</strong></p>
+                        <p>Ціна зі знижкою: <strong class="text-success" id="resultPrice">@Model.Price.ToString("C")</strong></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
+                <button type="button" class="btn btn-primary" id="saveDiscount">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        var currentPrice = @Model.Price;
+
+        function showDiscountModal(isEdit, discountId, discountName, discountValue) {
+            console.log('showDiscountModal called', { isEdit, discountId, discountName, discountValue });
+
+            if (isEdit) {
+                $('#discountModalLabel').text('Редагувати знижку');
+                $('#discountId').val(discountId);
+                $('#discountName').val(discountName);
+                $('#discountValue').val(discountValue);
+                $('#isEdit').val('true');
+
+                // Розрахувати ціну зі знижкою
+                var discount = parseFloat(discountValue) || 0;
+                var discountedPrice = currentPrice * (1 - discount / 100);
+                $('#resultPrice').text(discountedPrice.toFixed(2) + ' ₴');
+            } else {
+                $('#discountModalLabel').text('Додати знижку');
+                $('#discountId').val('');
+                $('#discountName').val('');
+                $('#discountValue').val('');
+                $('#isEdit').val('false');
+                $('#resultPrice').text(currentPrice.toFixed(2) + ' ₴');
+            }
+
+            // Використовуємо Bootstrap 4 синтаксис замість Bootstrap 5
+            $('#discountModal').modal('show');
+        }
+
+        function removeDiscount(discountId) {
+            if (confirm('Ви впевнені, що хочете видалити знижку?')) {
+                $.ajax({
+                    url: '@Url.Action("RemoveDiscount", "Admin")',
+                    type: 'POST',
+                    data: { id: discountId },
+                    success: function(response) {
+                        console.log('RemoveDiscount response:', response);
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert(response.message || 'Помилка при видаленні знижки');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('RemoveDiscount error:', error);
+                        alert('Помилка при видаленні знижки: ' + error);
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function() {
+            console.log('Document ready, currentPrice:', currentPrice);
+
+            // Розрахунок ціни зі знижкою при введенні
+            $('#discountValue').on('input', function() {
+                var discount = parseFloat($(this).val()) || 0;
+                var discountedPrice = currentPrice * (1 - discount / 100);
+                $('#resultPrice').text(discountedPrice.toFixed(2) + ' ₴');
+                console.log('Discount calculated:', { discount, discountedPrice });
+            });
+
+            // Обробник збереження знижки
+            $('#saveDiscount').click(function() {
+                console.log('Save discount clicked');
+
+                var productId = parseInt($('#productId').val());
+                var discountName = $('#discountName').val().trim();
+                var discountValue = parseFloat($('#discountValue').val());
+                var isEdit = $('#isEdit').val() === 'true';
+                var discountId = $('#discountId').val();
+
+                console.log('Form data:', { productId, discountName, discountValue, isEdit, discountId });
+
+                // Валідація
+                if (!discountName) {
+                    alert('Введіть назву знижки');
+                    return;
+                }
+
+                if (isNaN(discountValue) || discountValue <= 0 || discountValue > 100) {
+                    alert('Розмір знижки повинен бути від 0.01 до 100%');
+                    return;
+                }
+
+                if (isNaN(productId)) {
+                    alert('Помилка: неправильний ID продукту');
+                    return;
+                }
+
+                var url = isEdit ? '@Url.Action("EditDiscount", "Admin")' : '@Url.Action("AddDiscount", "Admin")';
+                var data = isEdit ?
+                    {
+                        discountId: parseInt(discountId),
+                        discountName: discountName,
+                        discountValue: discountValue
+                    } :
+                    {
+                        productId: productId,
+                        discountName: discountName,
+                        discountValue: discountValue
+                    };
+
+                console.log('AJAX request:', { url, data });
+
+                // Блокуємо кнопку під час запиту
+                $('#saveDiscount').prop('disabled', true).text('Збереження...');
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('AJAX success response:', response);
+                        $('#saveDiscount').prop('disabled', false).text('Зберегти');
+
+                        if (response.success) {
+                            $('#discountModal').modal('hide');
+                            alert(response.message || 'Знижку успішно збережено');
+                            location.reload();
+                        } else {
+                            alert(response.message || 'Помилка при збереженні');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', { xhr, status, error });
+                        console.error('Response text:', xhr.responseText);
+                        $('#saveDiscount').prop('disabled', false).text('Зберегти');
+
+                        var errorMessage = 'Помилка при збереженні знижки';
+                        if (xhr.responseText) {
+                            try {
+                                var errorResponse = JSON.parse(xhr.responseText);
+                                errorMessage += ': ' + (errorResponse.message || errorResponse);
+                            } catch (e) {
+                                errorMessage += ': ' + xhr.responseText;
+                            }
+                        }
+                        alert(errorMessage);
+                    }
+                });
+            });
+
+            // Закрити модальне вікно при натисканні Escape
+            $(document).keyup(function(e) {
+                if (e.keyCode === 27) {
+                    $('#discountModal').modal('hide');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,6 @@
+SELECT TOP (1000) [Id]
+      ,[DiscountName]
+      ,[DiscountValue]
+      ,[DiscountedPrice]
+      ,[ProductionId]
+  FROM [ConfectionerShopDB].[dbo].[Discount]

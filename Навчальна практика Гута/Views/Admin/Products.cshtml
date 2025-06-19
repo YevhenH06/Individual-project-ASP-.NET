@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Навчальна_практика_Гута.Models.Production>
+@{
+    ViewBag.Title = "Управління продукцією";
+}
+<h2>Управління продукцією</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+<p>
+    @Html.ActionLink("Додати новий продукт", "CreateProduct", null, new { @class = "btn btn-success" })
+</p>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Назва</th>
+            <th>Ціна</th>
+            <th>Дата виготовлення</th>
+            <th>Термін придатності</th>
+            <th>Кількість</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.DisplayTime.ToString("dd.MM.yyyy")</td>
+                <td>@item.ExpiryTime.ToString("dd.MM.yyyy")</td>
+                <td>@item.Quantity</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        @Html.ActionLink("Редагувати", "EditProduct", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Видалити", "DeleteProduct", new { id = item.Id }, new {
+                            @class = "btn btn-danger btn-sm",
+                            onclick = "return confirm('Ви впевнені, що хочете видалити цей продукт?')"
+                        })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="mt-3">
+    @Html.ActionLink("Повернутися до панелі адміністратора", "Index", "Admin", null, new { @class = "btn btn-secondary" })
+</div>

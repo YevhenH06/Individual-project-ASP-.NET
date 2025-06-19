@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Навчальна_практика_Гута.Models.Basket>
+
+@{
+    ViewBag.Title = "Ваш кошик";
+}
+<h2>Ваш кошик</h2>
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Кошик порожній</div>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>Товар</th>
+            <th>Ціна</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.DiscountedPrice.ToString("C")</td>
+                <td>
+                    @Html.ActionLink("Видалити", "Remove", new { id = item.Id },
+                        new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+        <tr>
+            <th>Всього:</th>
+            <th>@Model.Sum(i => i.DiscountedPrice).ToString("C")</th>
+            <th></th>
+        </tr>
+    </table>
+
+    <div>
+        @Html.ActionLink("Продовжити покупки", "Index", "Home", null, new { @class = "btn btn-secondary" })
+    </div>
+}

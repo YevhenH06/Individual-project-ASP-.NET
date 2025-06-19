@@ -1,0 +1,341 @@
+﻿/* Основні стилі */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f8f9fa;
+    padding-bottom: 100px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.body-content {
+    min-height: calc(100vh - 160px);
+    padding-bottom: 40px;
+}
+
+/* Навігаційна панель */
+.navbar {
+    margin-bottom: 30px;
+    background-color: #343a40 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    transition: color 0.3s;
+}
+
+    .nav-link:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+    color: #343a40;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+/* Картки продуктів */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
+    height: 100%;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #343a40;
+}
+
+.card-text {
+    margin-bottom: 20px;
+}
+
+/* Форми */
+.form-horizontal .form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+.control-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Таблиці */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+    .table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+/* Кнопки */
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #0069d9;
+        color: white;
+    }
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+    .btn-success:hover {
+        background-color: #218838;
+        color: white;
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        color: white;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: white;
+    }
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+/* Ціни */
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-decoration-line-through {
+    text-decoration: line-through;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.fw-bold {
+    font-weight: 600 !important;
+}
+
+/* Повідомлення */
+.alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+/* Футер */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    z-index: 1000;
+}
+
+    footer p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+/* Відступи для форм */
+.col-md-2, .col-md-10 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-md-offset-2 {
+    margin-left: 16.66666667%;
+}
+
+/* Респонсивні стилі */
+@media (max-width: 992px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    .card {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 120px;
+    }
+
+    .body-content {
+        min-height: calc(100vh - 180px);
+    }
+
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .form-horizontal .control-label {
+        text-align: left !important;
+        margin-bottom: 5px;
+    }
+
+    .col-md-2, .col-md-10 {
+        width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .col-md-offset-2 {
+        margin-left: 0;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+
+        .table th, .table td {
+            padding: 8px 10px;
+        }
+}
+
+@media (max-width: 576px) {
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        padding: 8px 12px;
+    }
+
+    footer {
+        padding: 10px 0;
+    }
+
+        footer p {
+            font-size: 12px;
+        }
+}

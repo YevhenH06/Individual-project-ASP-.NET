@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Навчальна_практика_Гута.Models.Production>
+
+@{
+    var db = new Навчальна_практика_Гута.Models.ConfectionerShopDBEntities();
+}
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        var discount = db.Discount.FirstOrDefault(d => d.ProductionId == product.Id);
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@product.ProductName</h5>
+                    <p class="card-text">
+                        @if (discount != null)
+                        {
+                            <span class="text-muted text-decoration-line-through">@product.Price.ToString("C")</span>
+                            <span class="text-danger fw-bold"> @discount.DiscountedPrice.ToString("C")</span>
+                        }
+                        else
+                        {
+                            @product.Price.ToString("C")
+                        }
+                    </p>
+                    @using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
+                    {
+                        @Html.Hidden("productId", product.Id)
+                        <input type="number" name="quantity" value="1" min="1" max="@product.Quantity" class="form-control mb-2">
+                        <button type="submit" class="btn btn-primary">В кошик</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

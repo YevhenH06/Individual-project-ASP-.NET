@@ -1,0 +1,48 @@
+﻿@model Навчальна_практика_Гута.Models.Buyer
+
+@{
+    ViewBag.Title = "Деталі покупця";
+}
+<h2>Деталі покупця</h2>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">@Model.FirstName @Model.LastName</h4>
+        <dl class="row">
+            <dt class="col-sm-3">Телефон:</dt>
+            <dd class="col-sm-9">@Model.PhoneNumber</dd>
+            <dt class="col-sm-3">Email:</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+            <dt class="col-sm-3">Користувач:</dt>
+            <dd class="col-sm-9">@(Model.User?.Login ?? "Немає")</dd>
+            <dt class="col-sm-3">Кількість замовлень:</dt>
+            <dd class="col-sm-9">@(Model.Basket?.Count ?? 0)</dd>
+        </dl>
+    </div>
+</div>
+<div class="mt-3">
+    @Html.ActionLink("Редагувати", "EditBuyer", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Повернутися до списку", "Buyers", null, new { @class = "btn btn-secondary" })
+</div>
+@if (Model.Basket != null && Model.Basket.Any())
+{
+    <h4 class="mt-4">Останні замовлення</h4>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Продукт</th>
+                <th>Ціна</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Basket.OrderByDescending(b => b.Id).Take(5))
+            {
+                <tr>
+                    <td>@order.ProductName</td>
+                    <td>@order.DiscountedPrice.ToString("C")</td>
+                    <td>@order.Id</td> <!-- Тут можна додати дату, якщо вона є в моделі -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}

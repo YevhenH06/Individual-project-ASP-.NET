@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Навчальна_практика_Гута.Models.User>
+@{
+    ViewBag.Title = "Управління користувачами";
+}
+<h2>Управління користувачами</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+<!-- Інший код таблиці залишається без змін -->
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Логін</th>
+            <th>Роль</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Login</td>
+                <td>
+                    @if (item.Login.Contains("Admin") || item.Login.Contains("admin"))
+                    {
+                        <span class="badge bg-danger">Адміністратор</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">Покупець</span>
+                    }
+                </td>
+                <td>
+                    <div class="btn-group" role="group">
+                        @if (!item.Login.Contains("Admin") && !item.Login.Contains("admin"))
+                        {
+                            @Html.ActionLink("Зробити адміном", "MakeAdmin", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" })
+                        }
+                        @Html.ActionLink("Редагувати", "EditUser", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                        @Html.ActionLink("Видалити", "DeleteUser", new { id = item.Id }, new {
+                            @class = "btn btn-sm btn-danger",
+                            onclick = $"return confirm('Ви впевнені, що хочете видалити користувача {item.Login}?')"
+                        })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="mt-3">
+    @Html.ActionLink("Повернутися до панелі адміністратора", "Index", "Admin", null, new { @class = "btn btn-secondary" })
+</div>

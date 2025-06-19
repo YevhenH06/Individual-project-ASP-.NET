@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ca01fc9aa485415f9335008b058cfe0f" Name="Diagram1" ZoomLevel="78">
+        <EntityTypeShape EntityType="ConfectionerShopDBModel.Basket" Width="1.5" PointX="10.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfectionerShopDBModel.Buyer" Width="1.5" PointX="8.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfectionerShopDBModel.Discount" Width="1.5" PointX="8.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfectionerShopDBModel.Production" Width="1.5" PointX="6.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfectionerShopDBModel.sysdiagrams" Width="1.5" PointX="11.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfectionerShopDBModel.User" Width="1.5" PointX="6.25" PointY="5.625" IsExpanded="true" />
+        <AssociationConnector Association="ConfectionerShopDBModel.FK__Basket__BuyerId__1DE57479" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfectionerShopDBModel.FK__Basket__Discount__1ED998B2" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfectionerShopDBModel.FK__Buyer__UserId__145C0A3F" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfectionerShopDBModel.FK__Discount__Produc__1A14E395" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
